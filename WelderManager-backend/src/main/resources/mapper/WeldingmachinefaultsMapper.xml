@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yupi.usercenter.mapper.WeldingmachinefaultsMapper">
+
+    <resultMap id="BaseResultMap" type="com.yupi.usercenter.model.domain.Weldingmachinefaults">
+            <id property="fault_id" column="fault_id" jdbcType="BIGINT"/>
+            <result property="machine_id" column="machine_id" jdbcType="INTEGER"/>
+            <result property="employee_id" column="employee_id" jdbcType="INTEGER"/>
+            <result property="report_time" column="report_time" jdbcType="TIMESTAMP"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="resolution" column="resolution" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="image_path" column="image_path" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fault_id,machine_id,employee_id,
+        report_time,description,resolution,
+        status,image_path
+    </sql>
+</mapper>
