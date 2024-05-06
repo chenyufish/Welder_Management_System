@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fishman.welder_management_backend.mapper.WeldingusageMapper">
+
+    <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.Weldingusage">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="machineID" column="machineID" jdbcType="BIGINT"/>
+            <result property="employeeID" column="employeeID" jdbcType="BIGINT"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,machineID,employeeID,
+        createTime,updateTime
+    </sql>
+</mapper>

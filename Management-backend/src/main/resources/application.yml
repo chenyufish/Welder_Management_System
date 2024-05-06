@@ -1,11 +1,11 @@
 # 公共配置文件
 spring:
   application:
-    name: fishmanChat-backend
+    name: management-backend
   # DataSource Config
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/yupao
+    url: jdbc:mysql://localhost:3306/fishmanmg
     username: root
     password: 030610CHENyu
   # session 失效时间
@@ -29,7 +29,7 @@ spring:
   redis:
     port: 6379
     host: localhost
-    database: 0
+    database: 1
     #修改redis的数据库，redis带有16个数据库
   profiles:
     active: dev
@@ -43,7 +43,7 @@ server:
         http-only: false
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: on
+    map-underscore-to-camel-case: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #SQL的日志打印
   global-config:
     db-config:
@@ -59,11 +59,11 @@ knife4j:
     version: v2.0.0
     concat: fishman
     group:
-      yupao:
-        group-name: fishmanChat
+      management:
+        group-name: fishman-management
         api-rule: package
         api-rule-resources:
-          - com.fishman.usercenter.controller
+          - com.fishman.management_backend.controller
 fishman:
   img: /img/
   job: "0 0 0 * * ? *"

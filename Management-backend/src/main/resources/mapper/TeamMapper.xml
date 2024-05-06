@@ -2,26 +2,27 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yupi.usercenter.mapper.TeamMapper">
+<mapper namespace="com.fishman.management_backend.mapper.TeamMapper">
 
-    <resultMap id="BaseResultMap" type="com.fishman.usercenter.model.domain.Team">
-        <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="description" column="description" jdbcType="VARCHAR"/>
-        <result property="maxNum" column="max_num" jdbcType="INTEGER"/>
-        <result property="expireTime" column="expire_time" jdbcType="TIMESTAMP"/>
-        <result property="userId" column="user_id" jdbcType="BIGINT"/>
-        <result property="status" column="status" jdbcType="INTEGER"/>
-        <result property="password" column="password" jdbcType="VARCHAR"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    <resultMap id="BaseResultMap" type="com.fishman.management_backend.model.domain.Team">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="coverImage" column="coverImage" jdbcType="VARCHAR"/>
+            <result property="maxNum" column="maxNum" jdbcType="INTEGER"/>
+            <result property="expireTime" column="expireTime" jdbcType="TIMESTAMP"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,description,
-        max_num,expire_time,user_id,
-        status,password,create_time,
-        update_time,is_delete
+        coverImage,maxNum,expireTime,
+        userId,status,password,
+        createTime,updateTime,isDelete
     </sql>
 </mapper>

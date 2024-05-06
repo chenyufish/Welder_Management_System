@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fishman.welder_management_backend.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.User">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="userAccount" column="userAccount" jdbcType="VARCHAR"/>
+            <result property="avatarUrl" column="avatarUrl" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="TINYINT"/>
+            <result property="profile" column="profile" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="role" column="role" jdbcType="INTEGER"/>
+            <result property="friendIds" column="friendIds" jdbcType="VARCHAR"/>
+            <result property="tags" column="tags" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,password,
+        userAccount,avatarUrl,gender,
+        profile,phone,email,
+        status,role,friendIds,
+        tags,createTime,updateTime,
+        isDelete
+    </sql>
+    <select id="getRandomUser" resultType="com.fishman.welder_management_backend.model.domain.User">
+        SELECT *
+        FROM `user`
+        WHERE id >= (SELECT floor(RAND() * (SELECT MAX(id) FROM `user`)))
+        ORDER BY id
+        LIMIT 10;
+    </select>
+</mapper>

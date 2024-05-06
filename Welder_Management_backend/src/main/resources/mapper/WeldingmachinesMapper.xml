@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fishman.welder_management_backend.mapper.WeldingmachinesMapper">
+
+    <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.Weldingmachines">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="machineName" column="machineName" jdbcType="VARCHAR"/>
+            <result property="serialNumber" column="serialNumber" jdbcType="VARCHAR"/>
+            <result property="usageHours" column="usageHours" jdbcType="INTEGER"/>
+            <result property="imagePath" column="imagePath" jdbcType="VARCHAR"/>
+            <result property="notes" column="notes" jdbcType="VARCHAR"/>
+            <result property="machineStatus" column="machineStatus" jdbcType="INTEGER"/>
+            <result property="tags" column="tags" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,machineName,serialNumber,
+        usageHours,imagePath,notes,
+        machineStatus,tags,createTime,
+        updateTime,isDelete
+    </sql>
+</mapper>
