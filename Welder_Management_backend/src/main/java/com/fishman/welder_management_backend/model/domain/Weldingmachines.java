@@ -1,9 +1,6 @@
 package com.fishman.welder_management_backend.model.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,7 +16,7 @@ public class Weldingmachines implements Serializable {
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
@@ -70,6 +67,7 @@ public class Weldingmachines implements Serializable {
     /**
      * 是否删除
      */
+    @TableLogic
     private Integer isDelete;
 
     @TableField(exist = false)

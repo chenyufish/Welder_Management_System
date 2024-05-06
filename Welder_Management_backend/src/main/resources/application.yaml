@@ -68,4 +68,4 @@ fishman:
   img: /img/
   job: "0 0 0 * * ? *"
   enable-bloom-filter: false
-  use-short-messaging-service: true
+  use-short-messaging-service: false
