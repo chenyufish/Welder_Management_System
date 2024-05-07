@@ -9,15 +9,17 @@
             <result property="machineID" column="machineID" jdbcType="BIGINT"/>
             <result property="employeeID" column="employeeID" jdbcType="BIGINT"/>
             <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="imagePath" column="imagePath" jdbcType="VARCHAR"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+          <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,machineID,employeeID,
+        id,machineID,employeeID,title,
         description,status,imagePath,
-        createTime,updateTime
+        createTime,updateTime,isDelete
     </sql>
 </mapper>

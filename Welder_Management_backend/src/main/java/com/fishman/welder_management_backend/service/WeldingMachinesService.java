@@ -43,7 +43,6 @@ public interface WeldingMachinesService extends IService<WeldingMachine> {
      * @return {@link WeldingMachineVO}
      */
     WeldingMachineVO getMachineById(long machineId, Long userId);
-
     /**
      * 删除设备
      *

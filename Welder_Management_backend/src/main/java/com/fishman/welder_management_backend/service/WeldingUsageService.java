@@ -1,7 +1,9 @@
 package com.fishman.welder_management_backend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fishman.welder_management_backend.model.domain.User;
 import com.fishman.welder_management_backend.model.domain.WeldingUsage;
+import com.fishman.welder_management_backend.model.request.MachineBorrowRequest;
 
 
 /**
@@ -11,4 +13,7 @@ import com.fishman.welder_management_backend.model.domain.WeldingUsage;
 */
 public interface WeldingUsageService extends IService<WeldingUsage> {
 
+    Long borrowMachine(MachineBorrowRequest machineBorrowRequest, User loginUser);
+
+    Long returnMachine(MachineBorrowRequest machineBorrowRequest, User loginUser);
 }
