@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @TableName(value ="weldingusage")
 @Data
-public class Weldingusage implements Serializable {
+public class WeldingUsage implements Serializable {
     /**
      * 主键
      */

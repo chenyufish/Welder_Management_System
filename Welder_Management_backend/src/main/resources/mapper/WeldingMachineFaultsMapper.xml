@@ -2,18 +2,22 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fishman.welder_management_backend.mapper.WeldingusageMapper">
+<mapper namespace="com.fishman.welder_management_backend.mapper.WeldingMachineFaultsMapper">
 
-    <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.Weldingusage">
+    <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.WeldingMachineFaults">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="machineID" column="machineID" jdbcType="BIGINT"/>
             <result property="employeeID" column="employeeID" jdbcType="BIGINT"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="imagePath" column="imagePath" jdbcType="VARCHAR"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,machineID,employeeID,
+        description,status,imagePath,
         createTime,updateTime
     </sql>
 </mapper>

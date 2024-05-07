@@ -7,19 +7,15 @@ import com.fishman.welder_management_backend.common.ResultUtils;
 import com.fishman.welder_management_backend.exception.BusinessException;
 import com.fishman.welder_management_backend.model.domain.User;
 import com.fishman.welder_management_backend.model.request.*;
-import com.fishman.welder_management_backend.model.vo.BlogVO;
-import com.fishman.welder_management_backend.model.vo.MachineVO;
+import com.fishman.welder_management_backend.model.vo.WeldingMachineVO;
 import com.fishman.welder_management_backend.service.UserService;
-import com.fishman.welder_management_backend.service.WeldingmachinesService;
+import com.fishman.welder_management_backend.service.WeldingMachinesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,13 +31,13 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/machines")
 @Slf4j
 @Api(tags = "设备管理模块")
-public class WeldingmachinesController {
+public class WeldingMachinesController {
 
     /**
      * 设备服务
      */
     @Resource
-    private WeldingmachinesService weldingmachinesService;
+    private WeldingMachinesService weldingmachinesService;
 
 
     @Resource
@@ -60,12 +56,12 @@ public class WeldingmachinesController {
     @ApiImplicitParams(
             {@ApiImplicitParam(name = "currentPage", value = "当前页"),
                     @ApiImplicitParam(name = "request", value = "request请求")})
-    public BaseResponse<Page<MachineVO>> listMachinesPage(long currentPage, String machineName, HttpServletRequest request) {
+    public BaseResponse<Page<WeldingMachineVO>> listMachinesPage(long currentPage, String machineName, HttpServletRequest request) {
         User loginUser = userService.getLoginUser(request);
         if (loginUser == null) {
-            return ResultUtils.success(weldingmachinesService.pageMachine(currentPage, machineName, null));
+            return ResultUtils.success(weldingmachinesService.pageWeldingMachine(currentPage, machineName, null));
         } else {
-            return ResultUtils.success(weldingmachinesService.pageMachine(currentPage, machineName, loginUser.getId()));
+            return ResultUtils.success(weldingmachinesService.pageWeldingMachine(currentPage, machineName, loginUser.getId()));
         }
     }
     /**
@@ -101,12 +97,12 @@ public class WeldingmachinesController {
     @ApiImplicitParams(
             {@ApiImplicitParam(name = "currentPage", value = "当前页"),
                     @ApiImplicitParam(name = "request", value = "request请求")})
-    public BaseResponse<Page<MachineVO>> listMyBlogs(long currentPage, HttpServletRequest request) {
+    public BaseResponse<Page<WeldingMachineVO>> listMyBlogs(long currentPage, HttpServletRequest request) {
         User loginUser = userService.getLoginUser(request);
         if (loginUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN);
         }
-        Page<MachineVO> machinePage = weldingmachinesService.listMyMachines(currentPage, loginUser.getId());
+        Page<WeldingMachineVO> machinePage = weldingmachinesService.listMyMachines(currentPage, loginUser.getId());
         return ResultUtils.success(machinePage);
     }
     /**
@@ -120,7 +116,7 @@ public class WeldingmachinesController {
     @ApiImplicitParams(
             {@ApiImplicitParam(name = "id", value = "设备id"),
                     @ApiImplicitParam(name = "request", value = "request请求")})
-    public BaseResponse<MachineVO> getBlogById(@PathVariable Long id, HttpServletRequest request) {
+    public BaseResponse<WeldingMachineVO> getBlogById(@PathVariable Long id, HttpServletRequest request) {
         User loginUser = userService.getLoginUser(request);
         if (loginUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN);
@@ -164,7 +160,7 @@ public class WeldingmachinesController {
     @PutMapping("/update")
     @ApiOperation(value = "更新设备")
     @ApiImplicitParams(
-            {@ApiImplicitParam(name = "blogUpdateRequest", value = "色别更新请求"),
+            {@ApiImplicitParam(name = "blogUpdateRequest", value = "设备更新请求"),
                     @ApiImplicitParam(name = "request", value = "request请求")})
     public BaseResponse<String> updateMachine(MachineUpdateRequest machineUpdateRequest, HttpServletRequest request) {
         User loginUser = userService.getLoginUser(request);

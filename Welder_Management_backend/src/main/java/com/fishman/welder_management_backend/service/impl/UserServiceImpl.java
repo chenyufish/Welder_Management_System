@@ -824,7 +824,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 插图用户
+     * 插入用户
      *
      * @param phone    电话
      * @param account  账户

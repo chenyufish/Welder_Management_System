@@ -17,8 +17,8 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@ApiModel(value = "博文返回")
-public class MachineVO extends Blog implements Serializable {
+@ApiModel(value = "设备返回")
+public class WeldingMachineVO extends Blog implements Serializable {
     /**
      * 串行版本uid
      */

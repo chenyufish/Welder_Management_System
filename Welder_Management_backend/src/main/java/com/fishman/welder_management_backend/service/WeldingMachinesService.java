@@ -3,10 +3,11 @@ package com.fishman.welder_management_backend.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fishman.welder_management_backend.model.domain.User;
-import com.fishman.welder_management_backend.model.domain.Weldingmachines;
+import com.fishman.welder_management_backend.model.domain.WeldingMachine;
 import com.fishman.welder_management_backend.model.request.MachineAddRequest;
 import com.fishman.welder_management_backend.model.request.MachineUpdateRequest;
-import com.fishman.welder_management_backend.model.vo.MachineVO;
+import com.fishman.welder_management_backend.model.vo.BlogVO;
+import com.fishman.welder_management_backend.model.vo.WeldingMachineVO;
 
 
 /**
@@ -14,7 +15,7 @@ import com.fishman.welder_management_backend.model.vo.MachineVO;
 * @description 针对表【weldingmachines】的数据库操作Service
 * @createDate 2024-05-06 19:01:09
 */
-public interface WeldingmachinesService extends IService<Weldingmachines> {
+public interface WeldingMachinesService extends IService<WeldingMachine> {
     /**
      * 添加设备
      *
@@ -29,28 +30,19 @@ public interface WeldingmachinesService extends IService<Weldingmachines> {
      *
      * @param currentPage 当前页码
      * @param id          id
-     * @return {@link Page}<{@link MachineVO}>
+     * @return {@link Page}<{@link WeldingMachineVO}>
      */
-    Page<MachineVO> listMyMachines(long currentPage, Long id);
-
-    /**
-     * 分页设备
-     *
-     * @param currentPage 当前页码
-     * @param machineName       标题
-     * @param id          id
-     * @return {@link Page}<{@link MachineVO}>
-     */
-    Page<MachineVO> pageMachine(long currentPage, String machineName, Long id);
+    Page<WeldingMachineVO> listMyMachines(long currentPage, Long id);
+    Page<WeldingMachineVO> pageWeldingMachine(long currentPage, String machineName, Long id);
 
     /**
      * 收到设备通过id
      *
      * @param machineId 设备id
      * @param userId 用户id
-     * @return {@link MachineVO}
+     * @return {@link WeldingMachineVO}
      */
-    MachineVO getMachineById(long machineId, Long userId);
+    WeldingMachineVO getMachineById(long machineId, Long userId);
 
     /**
      * 删除设备

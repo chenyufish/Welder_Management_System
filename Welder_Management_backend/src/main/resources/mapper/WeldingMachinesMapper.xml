@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fishman.welder_management_backend.mapper.WeldingmachinesMapper">
+<mapper namespace="com.fishman.welder_management_backend.mapper.WeldingMachinesMapper">
 
-    <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.Weldingmachines">
+    <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.WeldingMachine">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="machineName" column="machineName" jdbcType="VARCHAR"/>
             <result property="serialNumber" column="serialNumber" jdbcType="VARCHAR"/>

@@ -37,9 +37,9 @@ public class SwaggerConfig {
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("用户中心")
-                .description("用户中心接口文档")
-                .termsOfServiceUrl("https://github.com/chenyufish/Partner_System")
+                .title("焊机管理系统")
+                .description("焊机管理系统接口文档")
+                .termsOfServiceUrl("https://github.com/chenyufish/Welder_Management_System")
                 .contact(new Contact("fishman","https://fishmanon.cn/","cy13692810010@163.com"))
                 .version("1.0")
                 .build();
