@@ -46,11 +46,9 @@ public class WeldingMachineFaultsVO extends Blog implements Serializable {
      */
     private Integer status;
 
-    /**
-     * 故障图片路径
-     */
-    private String imagePath;
 
+    @ApiModelProperty(value = "封面图片")
+    private String coverImage;
     /**
      * 创建时间
      */

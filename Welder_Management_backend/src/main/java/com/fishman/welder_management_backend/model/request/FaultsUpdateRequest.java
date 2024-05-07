@@ -22,7 +22,12 @@ public class FaultsUpdateRequest implements Serializable {
     /**
      * 图片
      */
-    @ApiModelProperty(value = "图片")
+    @ApiModelProperty(value = "已上传的图片")
+    private String imgStr;
+    /**
+     * 图片
+     */
+    @ApiModelProperty(value = "未上传的图片")
     private MultipartFile[] images;
     /**
      * 焊机ID
