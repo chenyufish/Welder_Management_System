@@ -56,40 +56,29 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
     private String qiniuUrl;
 
     /**
-     * @param machineAddRequest 设备添加请求
+     * @param weldingMachine 设备添加请求
      * @param loginUser      登录用户
      * @return
      */
     @Override
-    public Long addMachine(MachineAddRequest machineAddRequest, User loginUser) {
-        WeldingMachine machine = new WeldingMachine();
-        ArrayList<String> imageNameList=new ArrayList<>();
-        try {
-            MultipartFile[] images = machineAddRequest.getImagePath();
-            if (images!= null && images.length > 0){
-                if(fishmanProperties.isUseLocalStorage()){
-                    for (MultipartFile image : images) {
-                        String filename = FileUtils.uploadFile2Local(image);
-                        imageNameList.add(filename);
-                    }
-                }
-                else {
-                    for (MultipartFile image : images) {
-                        String filename = FileUtils.uploadFile2Local(image);
-                        imageNameList.add(filename);
-                    }
-                }
-                String imagePath = StringUtils.join(imageNameList, ",");
-                machine.setImagePath(imagePath);
-            }
-        }
-        catch (Exception e) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,e.getMessage());
-        }
+    public long addMachine(WeldingMachine weldingMachine, User loginUser) {
         //todo 校验参数合法性
-        machine.setMachineName(machineAddRequest.getMachineName());
-        machine.setSerialNumber(machineAddRequest.getSerialNumber());
-        return machine.getId();
+        if (weldingMachine == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (loginUser == null) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN);
+        }
+
+        final long userId = loginUser.getId();
+        weldingMachine.setId(null);
+        weldingMachine.setUserId(userId);
+        boolean result = this.save(weldingMachine);
+        Long machineId = weldingMachine.getId();
+        if (!result|| machineId == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        return machineId;
     }
 
     /**

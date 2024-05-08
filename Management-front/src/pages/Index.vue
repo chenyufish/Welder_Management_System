@@ -14,7 +14,7 @@
       </van-swipe-item>
     </van-swipe>
     <van-tabs v-model:active="active">
-      <van-tab title="匹配用户">
+      <van-tab title="推荐设备">
         <van-pull-refresh
             v-model="refreshLoading"
             success-text="刷新成功"
@@ -34,10 +34,10 @@
           </van-list>
           <van-back-top right="20px" bottom="60px"/>
           <van-empty v-if="(!userList ||　userList.length===0) && !listLoading && !searching" image="search"
-                     description="暂无用户"/>
+                     description="暂无设备"/>
         </van-pull-refresh>
       </van-tab>
-      <van-tab title="热门博文">
+      <van-tab title="部门通知">
         <van-pull-refresh
             v-model="refreshLoading"
             success-text="刷新成功"
@@ -57,7 +57,7 @@
           </van-list>
           <van-back-top right="20px" bottom="60px"/>
           <van-empty v-if="(!blogList ||　blogList.length===0) && !listLoading &&!searching" image="search"
-                     description="暂无博文"/>
+                     description="暂无通知"/>
         </van-pull-refresh>
       </van-tab>
       <van-loading vertical v-if="searching">

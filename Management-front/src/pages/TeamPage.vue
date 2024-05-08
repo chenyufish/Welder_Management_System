@@ -1,8 +1,8 @@
 <template>
-  <van-search v-model="searchText" placeholder="搜索队伍" @search="onSearch"/>
+  <van-search v-model="searchText" placeholder="搜索设备" @search="onSearch"/>
   <van-tabs v-model:active="active" @change="tabChange">
-    <van-tab title="公开" name="public"/>
-    <van-tab title="加密" name="private"/>
+    <van-tab title="使用中" name="public"/>
+    <van-tab title="已归还" name="private"/>
   </van-tabs>
   <van-pull-refresh
       v-model="refreshLoading"
@@ -34,7 +34,7 @@
       <TeamCardList :team-list="teamList" @refresh="onRefresh"/>
     </van-list>
   </van-pull-refresh>
-  <van-empty image="search" v-if="(!teamList || teamList.length===0) && !listLoading" description="暂无符合要求的队伍"/>
+  <van-empty image="search" v-if="(!teamList || teamList.length===0) && !listLoading" description="暂无符合要求的设备"/>
   <van-button class="add-button" icon="plus" type="primary" @click="toCreateTeam"></van-button>
 </template>
 

@@ -14,6 +14,8 @@ import ForgetPasswordPage from "./pages/ForgetPasswordPage.vue";
 import AfterSignUp from "./pages/AfterSignUp.vue";
 import ChatPage from "./pages/ChatPage.vue";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage.vue";
+import FaultsEditPage from "./pages/FaultsEditPage.vue";
+import AfterMachineAdd from "./pages/AfterMachineAdd.vue";
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(),
@@ -21,10 +23,10 @@ const router = VueRouter.createRouter({
 })
 const app = createApp(App);
 app.component("default-layout", BasicLayout)
-app.component("blog-edit-layout", BlogEditPage)
+app.component("blog-edit-layout", FaultsEditPage)
 app.component('blog-layout', BlogPage)
 app.component("forget-layout", ForgetPasswordPage)
-app.component("after-layout", AfterSignUp)
+app.component("after-layout", AfterMachineAdd)
 app.component("chat-layout", ChatPage)
 app.component("password-layout", UpdatePasswordPage)
 app.use(Button);

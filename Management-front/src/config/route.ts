@@ -27,28 +27,31 @@ import UserFansPage from "../pages/UserFansPage.vue";
 import UserLikePage from "../pages/UserLikePage.vue";
 import UpdatePasswordPage from "../pages/UpdatePasswordPage.vue";
 import UserFollowUserPage from "../pages/UserFollowUserPage.vue";
+import MachineAddPage from "../pages/MachineAddPage.vue";
+import AfterMachineAdd from "../pages/AfterMachineAdd.vue";
+import FaultsEditPage from "../pages/FaultsEditPage.vue";
 
 const routes = [
-    {path: '/', title: "小黑子匹配", component: Index},
-    {path: '/search', title: "搜索", component: Search},
-    {path: '/search/userList', title: "搜索到的用户", component: SearchResult},
-    {path: '/team', title: "队伍", component: Team},
-    {path: '/team/detail', title: '队伍详情', component: TeamDetailPage},
-    {path: '/team/add', title: "创建队伍", component: TeamAddPage},
-    {path: '/team/update', title: "更新队伍", component: TeamUpdatePage},
+    {path: '/', title: "焊接管理系统", component: Index},
+    {path: '/search', title: "搜索设备", component: Search},
+    {path: '/search/userList', title: "搜索到的设备", component: SearchResult},
+    {path: '/team', title: "使用记录", component: Team},
+    {path: '/team/detail', title: '设备详情', component: TeamDetailPage},
+    {path: '/team/add', title: "添加设备", component: MachineAddPage},
+    {path: '/team/update', title: "更新设备", component: TeamUpdatePage},
     {path: '/user', title: "个人", component: User},
     {path: '/user/tag', title: "标签", component: UserTagPage},
     {path: '/user/detail', title: '用户详情', component: UserDetailPage},
     {path: '/user/signup', component: SignUpPage},
-    {path: '/after', title: '标签', component: AfterSignUp, meta: {layout: 'after'}},
+    {path: '/after', title: '标签', component: AfterMachineAdd, meta: {layout: 'after'}},
     {path: '/user/login', title: "用户登录", component: UserLogin},
     {path: '/user/edit', title: "修改用户", component: EditUser},
     {path: '/user/update', title: "修改用户", component: UserUpdatePage},
-    {path: '/user/team/join', title: "我加入的队伍", component: UserTeamJoinPage},
-    {path: '/user/team/create', title: "我创建的队伍", component: UserTeamCreatePage},
+    {path: '/user/team/join', title: "我使用的设备", component: UserTeamJoinPage},
+    {path: '/user/team/create', title: "我添加到设备", component: UserTeamCreatePage},
     {path: '/blog', component: BlogPage, meta: {layout: 'blog'}},
-    {path: '/blog/edit', title: '博文编辑', component: BlogEditPage, meta: {layout: 'blog-edit'}},
-    {path: '/user/blog', title: '我写的博文', component: UserBlogPage},
+    {path: '/blog/edit', title: '故障报告', component: FaultsEditPage, meta: {layout: 'blog-edit'}},
+    {path: '/user/blog', title: '我的故障报告', component: UserBlogPage},
     {path: '/message', title: '消息中心', component: MessagePage},
     {path: '/forget', title: '找回密码', component: ForgetPasswordPage, meta: {layout: 'forget'}},
     {path: '/chat', component: ChatPage, meta: {layout: 'chat'}},

@@ -16,7 +16,7 @@
   </div>
   <van-tabbar route v-model="active">
     <van-tabbar-item to="/" icon="home-o" name="index">主页</van-tabbar-item>
-    <van-tabbar-item to="/team" icon="flag-o" name="team">队伍</van-tabbar-item>
+    <van-tabbar-item to="/team" icon="flag-o" name="team">使用记录</van-tabbar-item>
     <van-tabbar-item replace class="van-tabbar-addBlog" @click="checkLogin('/blog/edit',2)">
       <div class="center-wrap">
         <div class="bgc-wrap">
@@ -44,7 +44,7 @@ import myAxios from "../plugins/myAxios.js";
 
 const hasMessage = ref(false)
 let router = useRouter();
-const DEFAULT_TITLE = "小黑子匹配"
+const DEFAULT_TITLE = "焊机管理系统"
 const title = ref(DEFAULT_TITLE)
 const active = ref(0)
 router.beforeEach(async (to) => {
@@ -52,7 +52,7 @@ router.beforeEach(async (to) => {
   const route = routes.find((routes) => {
     return routes.path === toPath
   })
-  document.title = "小黑子匹配"
+  document.title = "焊机管理系统"
   title.value = route?.title ?? DEFAULT_TITLE
   if (to.path !== '/user/login') {
     let res = await myAxios.get("/message");

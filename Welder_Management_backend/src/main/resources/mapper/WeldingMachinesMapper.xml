@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.WeldingMachine">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="machineName" column="machineName" jdbcType="VARCHAR"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
             <result property="serialNumber" column="serialNumber" jdbcType="VARCHAR"/>
             <result property="usageHours" column="usageHours" jdbcType="INTEGER"/>
             <result property="imagePath" column="imagePath" jdbcType="VARCHAR"/>
@@ -19,7 +20,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,machineName,serialNumber,
+        id,machineName,serialNumber,userId,
         usageHours,imagePath,notes,
         machineStatus,tags,createTime,
         updateTime,isDelete

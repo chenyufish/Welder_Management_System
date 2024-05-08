@@ -1,6 +1,7 @@
 package com.fishman.welder_management_backend.model.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,6 +19,9 @@ public class WeldingMachine implements Serializable {
      */
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
+
+    @ApiModelProperty(value = "添加者id")
+    private Long userId;
 
     /**
      * 焊机名字
@@ -40,7 +44,7 @@ public class WeldingMachine implements Serializable {
     private String imagePath;
 
     /**
-     * 备注，额外信息
+     * 介绍
      */
     private String notes;
 

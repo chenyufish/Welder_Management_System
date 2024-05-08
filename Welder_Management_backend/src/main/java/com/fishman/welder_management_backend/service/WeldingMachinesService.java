@@ -19,11 +19,11 @@ public interface WeldingMachinesService extends IService<WeldingMachine> {
     /**
      * 添加设备
      *
-     * @param machineAddRequest 设备添加请求
+     * @param weldingMachine 设备添加请求
      * @param loginUser      登录用户
      * @return {@link Long}
      */
-    Long addMachine(MachineAddRequest machineAddRequest, User loginUser);
+    long addMachine(WeldingMachine weldingMachine, User loginUser);
 
     /**
      * 列出我使用的设备

@@ -1,4 +1,15 @@
 <template>
+  <van-sticky>
+    <van-nav-bar
+        title="标签"
+        style="text-align: left"
+        @click-right="onClickRight"
+    >
+      <template #right>
+        跳过
+      </template>
+    </van-nav-bar>
+  </van-sticky>
   <form action="/">
     <van-search
         v-model="searchText"
@@ -31,16 +42,20 @@
     </van-cell-group>
   </form>
   <div style="margin: 20px">
-    <van-button block type="primary" @click="searchUser">搜索</van-button>
+    <van-button block type="primary" @click="updateTag">完成</van-button>
   </div>
 </template>
 
-<script setup lang="ts">
-
-import {ref} from "vue";
+<script setup>
+import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import {showFailToast} from "vant";
+import myAxios from "../plugins/myAxios.js";
 
+let router = useRouter();
+const onClickRight = () => {
+  router.replace("/")
+}
 const userDefinedTag = ref("")
 const addUserDefinedTag = () => {
   if (userDefinedTag.value !== "") {
@@ -50,7 +65,6 @@ const addUserDefinedTag = () => {
     showFailToast("请先输入标签名")
   }
 }
-let router = useRouter();
 const originTagList = [
   {
     text: '输入电压',
@@ -123,9 +137,14 @@ const originTagList = [
     ]
   }
 ];
-
 let tagList = ref(originTagList);
 const searchText = ref('');
+onMounted(async () => {
+  let res = await myAxios.get("/user/tags");
+  if (res?.data.code === 0) {
+    activeIds.value = res.data.data
+  }
+})
 const onSearch = () => {
   tagList.value = originTagList.map(parentTag => {
     const tempChildren = [...parentTag.children];
@@ -142,19 +161,14 @@ const close = (tag) => {
     return item !== tag;
   })
 };
-const searchUser = () => {
-  if (activeIds.value.length === 0) {
-    showFailToast("标签不能为空")
-  } else {
-    router.push({
-      path: '/search/userList',
-      query: {
-        tags: activeIds.value
-      }
-    })
+const updateTag = async () => {
+  let res = await myAxios.put("/user/update/tags", activeIds.value);
+  if (res?.data.code === 0) {
+    await router.replace("/user")
   }
 }
 </script>
 
 <style scoped>
+
 </style>

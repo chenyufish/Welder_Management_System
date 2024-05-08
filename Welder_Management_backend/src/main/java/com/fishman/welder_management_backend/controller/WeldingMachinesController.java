@@ -6,9 +6,11 @@ import com.fishman.welder_management_backend.common.ErrorCode;
 import com.fishman.welder_management_backend.common.ResultUtils;
 import com.fishman.welder_management_backend.exception.BusinessException;
 import com.fishman.welder_management_backend.model.domain.User;
+import com.fishman.welder_management_backend.model.domain.WeldingMachine;
 import com.fishman.welder_management_backend.model.request.*;
 import com.fishman.welder_management_backend.model.vo.WeldingMachineVO;
 import com.fishman.welder_management_backend.service.UserService;
+import com.fishman.welder_management_backend.service.WeldingMachineFaultsService;
 import com.fishman.welder_management_backend.service.WeldingMachinesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,6 +18,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 //TODO 整个页面都需要鉴权
 @RestController
-@RequestMapping("/machines")
+@RequestMapping("/machine")
 @Slf4j
 @Api(tags = "设备管理模块")
 public class WeldingMachinesController {
@@ -75,16 +78,19 @@ public class WeldingMachinesController {
     @ApiImplicitParams(
             {@ApiImplicitParam(name = "MachineAddRequest", value = "添加设备参数"),
                     @ApiImplicitParam(name = "request", value = "request请求")})
-    public BaseResponse<String> addMachine(MachineAddRequest machineAddRequest, HttpServletRequest request) {
+    public BaseResponse<Long> addMachine(@RequestBody MachineAddRequest machineAddRequest, HttpServletRequest request) {
+        if (machineAddRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
         User loginUser = userService.getLoginUser(request);
         if (loginUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN);
         }
-        if (StringUtils.isAnyBlank(machineAddRequest.getMachineName(), machineAddRequest.getSerialNumber())) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        weldingmachinesService.addMachine(machineAddRequest, loginUser);
-        return ResultUtils.success("添加成功");
+        WeldingMachine machine = new WeldingMachine();
+        BeanUtils.copyProperties(machineAddRequest, machine);
+        Long machineId = weldingmachinesService.addMachine(machine, loginUser);
+        return ResultUtils.success(machineId);
     }
     /**
      * 我使用的列表
