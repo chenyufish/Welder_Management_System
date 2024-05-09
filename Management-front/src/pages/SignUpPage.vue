@@ -154,7 +154,7 @@ const onSubmit = async () => {
   if (res?.data.code === 0) {
     showSuccessToast("注册成功")
     sessionStorage.setItem("token", res.data.data)
-    location.href = "/after"
+    location.href = "/after/user"
   } else {
     showFailToast("注册失败," + res?.data.description ?? '')
   }

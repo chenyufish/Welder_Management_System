@@ -18,5 +18,4 @@ public interface WeldingUsageService extends IService<WeldingUsage> {
     Long borrowMachine(MachineBorrowRequest machineBorrowRequest, User loginUser);
 
     Long returnMachine(MachineBorrowRequest machineBorrowRequest, User loginUser);
-    Page<WeldingMachineVO> getUsageUserAvatar(Page<WeldingMachineVO> machineVoPage);
 }

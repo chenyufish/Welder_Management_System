@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import myAxios from "../plugins/myAxios.js";
-import { showFailToast, showSuccessToast } from "vant";
+import {showFailToast, showSuccessToast} from "vant";
 import {ref} from "vue";
 
 
@@ -70,9 +70,8 @@ const onSubmit = async () => {
   const res = await myAxios.post("/machine/add", postData);
   if (res?.data.code === 0) {
     showSuccessToast("添加成功");
-    console.log(res.data); // 查看返回的数据结构
-    const afterUrl=`/after?id=${res.data.data}`;
-    location.href=afterUrl;
+    const machineIdStr=String(res.data.data);
+    location.href=`/after/machine?id=${machineIdStr}`;
   } else {
     showFailToast(
         "添加失败" +

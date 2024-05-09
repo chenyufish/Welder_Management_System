@@ -1,5 +1,6 @@
 package com.fishman.welder_management_backend.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.fishman.welder_management_backend.common.ErrorCode;
@@ -10,6 +11,7 @@ import com.fishman.welder_management_backend.model.domain.WeldingMachine;
 import com.fishman.welder_management_backend.model.domain.WeldingUsage;
 import com.fishman.welder_management_backend.model.request.MachineBorrowRequest;
 import com.fishman.welder_management_backend.model.vo.WeldingMachineVO;
+import com.fishman.welder_management_backend.model.vo.WeldingUsageVO;
 import com.fishman.welder_management_backend.service.WeldingMachinesService;
 import com.fishman.welder_management_backend.service.WeldingUsageService;
 import org.springframework.stereotype.Service;
@@ -29,10 +31,12 @@ public class WeldingUsageServiceImpl extends ServiceImpl<WeldingUsageMapper, Wel
     WeldingMachinesService weldingMachinesService;
     @Override
     public Long borrowMachine(MachineBorrowRequest machineBorrowRequest, User loginUser) {
-        String machineId = String.valueOf(machineBorrowRequest.getMachineID());
-        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeID());
-        WeldingMachineVO weldingMachineVO = weldingMachinesService.getMachineById(Long.parseLong(machineId), loginUser.getId());
-        weldingMachineVO.getMachineStatus();
+        String machineId = String.valueOf(machineBorrowRequest.getMachineId());
+        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeId());
+        WeldingUsageVO weldingUsageVO = new WeldingUsageVO();
+        Integer status =weldingUsageVO.getMachineStatus();
+        if (status == null)
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
         if (machineId == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -54,8 +58,8 @@ public class WeldingUsageServiceImpl extends ServiceImpl<WeldingUsageMapper, Wel
 
     @Override
     public Long returnMachine(MachineBorrowRequest machineBorrowRequest, User loginUser) {
-        String machineId = String.valueOf(machineBorrowRequest.getMachineID());
-        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeID());
+        String machineId = String.valueOf(machineBorrowRequest.getMachineId());
+        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeId());
         WeldingMachineVO weldingMachineVO = weldingMachinesService.getMachineById(Long.parseLong(machineId), loginUser.getId());
         weldingMachineVO.getMachineStatus();
         if (machineId == null) {
@@ -76,6 +80,7 @@ public class WeldingUsageServiceImpl extends ServiceImpl<WeldingUsageMapper, Wel
             throw new BusinessException(ErrorCode.SYSTEM_ERROR);
         }
     }
+
 }
 
 

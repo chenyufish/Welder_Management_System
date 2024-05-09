@@ -5,14 +5,14 @@
   <van-form @submit="onSubmit">
     <van-cell-group inset>
       <van-field
-          v-model="updateTeamData.machineName"
+          v-model="updateMachineData.machineName"
           name="name"
           label="名称"
           placeholder="请输入设备名称"
           :rules="[{ required: true, message: '请输入设备名称' }]"
       />
       <van-field
-          v-model="updateTeamData.notes"
+          v-model="updateMachineData.notes"
           rows="1"
           autosize
           label="描述"
@@ -20,17 +20,16 @@
           placeholder="请输入设备描述"
       />
       <van-field
-          v-model="updateTeamData.serialNumber"
+          v-model="updateMachineData.serialNumber"
           rows="2"
           autosize
           label="序列号"
           type="textarea"
           placeholder="请输入设备序列号"
       />
-
       <van-field name="radio" label="状态">
         <template #input>
-          <van-radio-group v-model="updateTeamData.machineStatus" direction="horizontal">
+          <van-radio-group v-model="updateMachineData.machineStatus" direction="horizontal">
             <van-radio name="0">空闲</van-radio>
             <van-radio name="1">使用</van-radio>
             <van-radio name="2">维修</van-radio>
@@ -55,20 +54,19 @@ import {showFailToast, showSuccessToast} from "vant";
 
 let router = useRouter();
 let route = useRoute();
-const updateTeamData = ref({})
-const showCalendar = ref(false);
+const updateMachineData = ref({})
 onMounted(async () => {
   const res = await myAxios.get("/machine/" + route.query.id)
   if (res?.data.code === 0) {
     res.data.data.status = String(res.data.data.status)
-    updateTeamData.value = res.data.data
+    updateMachineData.value = res.data.data
   } else {
     showFailToast("队伍查询失败" + (res.data.description ? `,${res.data.description}` : ''))
   }
 })
 const onSubmit = async () => {
   const postData = {
-    ...updateTeamData.value,
+    ...updateMachineData.value,
     status: Number(updateTeamData.value.machineStatus),
   }
   //todo 前端校验

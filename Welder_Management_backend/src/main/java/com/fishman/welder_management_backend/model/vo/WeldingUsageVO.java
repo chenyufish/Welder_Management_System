@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.aspectj.apache.bcel.generic.LineNumberGen;
 
 import java.io.Serializable;
 
@@ -18,30 +19,18 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel(value = "设备返回")
-public class WeldingMachineVO extends Blog implements Serializable {
+public class WeldingUsageVO extends Blog implements Serializable {
     /**
      * 串行版本uid
      */
-    private static final long serialVersionUID = -1461567317259590205L;
+    private static final long serialVersionUID = -5719387361771906622L;
 
+   private Long machineId;
+   private Long employeeId;
     /**
-     * 封面图片
+     * 0 - 空闲，1 - 使用，2 - 故障
      */
-    @ApiModelProperty(value = "封面图片")
-    private String imagePath;
-    /**
-     * 焊机状态（0-空闲，1-使用中，2-维修中）
-     */
+    @ApiModelProperty(value = "状态")
     private Integer machineStatus;
-    /**
-     * 已使用时间（小时）
-     */
-    /**
-     * 创建人用户信息
-     */
-    @ApiModelProperty(value = "创建人")
-    private UserVO createUser;
-
-    private Integer usageHours;
 
 }

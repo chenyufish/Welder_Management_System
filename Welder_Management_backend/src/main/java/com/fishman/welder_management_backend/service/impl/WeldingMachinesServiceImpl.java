@@ -2,6 +2,7 @@ package com.fishman.welder_management_backend.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -10,7 +11,9 @@ import com.fishman.welder_management_backend.exception.BusinessException;
 import com.fishman.welder_management_backend.mapper.WeldingMachinesMapper;
 import com.fishman.welder_management_backend.model.domain.*;
 import com.fishman.welder_management_backend.model.enums.MachineStatusEnum;
+import com.fishman.welder_management_backend.model.enums.TeamStatusEnum;
 import com.fishman.welder_management_backend.model.request.MachineAddRequest;
+import com.fishman.welder_management_backend.model.request.MachineQueryRequest;
 import com.fishman.welder_management_backend.model.request.MachineUpdateRequest;
 import com.fishman.welder_management_backend.model.vo.UserVO;
 import com.fishman.welder_management_backend.model.vo.WeldingMachineVO;
@@ -83,6 +86,83 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
         }
         return machineId;
     }
+
+    @Override
+    public Page<WeldingMachineVO> listMachines(long currentPage, MachineQueryRequest machineQuery, boolean isAdmin) {
+        LambdaQueryWrapper<WeldingMachine> machineLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // 组合查询条件
+        if (machineQuery != null) {
+            Long id = machineQuery.getId();
+            List<Long> idList = machineQuery.getIdList();
+            String searchText = machineQuery.getSearchText();
+            // 根据队伍名查询
+            String name = machineQuery.getMachineName();
+            // 根据描述查询
+            String description = machineQuery.getDescription();
+            // 根据队长Id查询
+            Long userId = machineQuery.getUserId();
+            // 根据状态来查询
+            Integer status = machineQuery.getStatus();
+            TeamStatusEnum statusEnum = TeamStatusEnum.getEnumByValue(status);
+            if (statusEnum == null) {
+                statusEnum = TeamStatusEnum.PUBLIC;
+            }
+            if (!isAdmin && statusEnum.equals(TeamStatusEnum.PRIVATE)) {
+                throw new BusinessException(ErrorCode.NO_AUTH);
+            }
+            machineLambdaQueryWrapper
+                    .eq(id != null && id > 0, WeldingMachine::getId, id)
+                    .in(CollectionUtils.isNotEmpty(idList), WeldingMachine::getId, idList)
+                    .and(StringUtils.isNotBlank(searchText),
+                            qw -> qw.like(WeldingMachine::getMachineName, searchText)
+                                    .or()
+                                    .like(WeldingMachine::getNotes, searchText)
+                    )
+                    .like(StringUtils.isNotBlank(name), WeldingMachine::getMachineName, name)
+                    .like(StringUtils.isNotBlank(description), WeldingMachine::getNotes, description)
+                    .eq(userId != null && userId > 0, WeldingMachine::getUserId, userId)
+                    .eq(WeldingMachine::getMachineStatus, statusEnum.getValue())
+                    .orderBy(true, false, WeldingMachine::getCreateTime);
+        }
+        return listTeamByCondition(currentPage, machineLambdaQueryWrapper);
+    }
+    /**
+     * 按条件列出设备
+     *
+     * @param currentPage            当前页码
+     * @param machineLambdaQueryWrapper 团队lambda查询包装器
+     * @return {@link Page}<{@link WeldingMachineVO}>
+     */
+    public Page<WeldingMachineVO> listTeamByCondition(long currentPage, LambdaQueryWrapper<WeldingMachine> machineLambdaQueryWrapper) {
+        Page<WeldingMachine> teamPage = this.page(new Page<>(currentPage, PAGE_SIZE), machineLambdaQueryWrapper);
+        if (CollectionUtils.isEmpty(teamPage.getRecords())) {
+            return new Page<>();
+        }
+        Page<WeldingMachineVO> machineVoPage = new Page<>();
+        // 关联查询创建人的用户信息
+        BeanUtils.copyProperties(teamPage, machineVoPage, "records");
+        List<WeldingMachine> teamPageRecords = teamPage.getRecords();
+        ArrayList<WeldingMachineVO> teamUserVOList = new ArrayList<>();
+        for (WeldingMachine weldingMachine : teamPageRecords) {
+            Long userId = weldingMachine.getUserId();
+            if (userId == null) {
+                continue;
+            }
+            User user = userService.getById(userId);
+            WeldingMachineVO machineUserVO = new WeldingMachineVO();
+            BeanUtils.copyProperties(weldingMachine, machineUserVO);
+            // 脱敏用户信息
+            if (user != null) {
+                UserVO userVO = new UserVO();
+                BeanUtils.copyProperties(user, userVO);
+                machineUserVO.setCreateUser(userVO);
+            }
+            teamUserVOList.add(machineUserVO);
+        }
+        machineVoPage.setRecords(teamUserVOList);
+        return machineVoPage;
+    }
+
     /**
      * 收到用户标签
      *
@@ -139,24 +219,6 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
         machineVoPage.setRecords(machineWithCoverImg);
         return machineVoPage;
 
-    }
-
-    @Override
-    public Page<WeldingMachineVO> pageWeldingMachine(long currentPage, String machineName, Long id) {
-        LambdaQueryWrapper<WeldingMachine> weldingMachineLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        weldingMachineLambdaQueryWrapper.like(StringUtils.isNotBlank(machineName), WeldingMachine::getMachineName, machineName);
-        weldingMachineLambdaQueryWrapper.orderBy(true, false, WeldingMachine::getCreateTime);
-        Page<WeldingMachine> weldingMachinePage = this.page(new Page<>(currentPage, PAGE_SIZE), weldingMachineLambdaQueryWrapper);
-        Page<WeldingMachineVO> weldingMachineVoPage = new Page<>();
-        BeanUtils.copyProperties(weldingMachinePage, weldingMachineVoPage);
-        List<WeldingMachineVO> weldingMachineVOList = weldingMachinePage.getRecords().stream().map((weldingMachine) -> {
-            WeldingMachineVO weldingMachineVO = new WeldingMachineVO();
-            BeanUtils.copyProperties(weldingMachine, weldingMachineVO);
-            return weldingMachineVO;
-        }).collect(Collectors.toList());
-        List<WeldingMachineVO> blogWithCoverImg = getCoverImg(weldingMachineVOList);
-        weldingMachineVoPage.setRecords(blogWithCoverImg);
-        return weldingMachineVoPage;
     }
 
     /**

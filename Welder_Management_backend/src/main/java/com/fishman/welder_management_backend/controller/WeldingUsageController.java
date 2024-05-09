@@ -83,11 +83,11 @@ public class WeldingUsageController {
         if (machineBorrowRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        String machineId = String.valueOf(machineBorrowRequest.getMachineID());
+        String machineId = String.valueOf(machineBorrowRequest.getMachineId());
         if (machineId == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeID());
+        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeId());
         if (employeeId == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -109,11 +109,11 @@ public class WeldingUsageController {
         if (machineBorrowRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        String machineId = String.valueOf(machineBorrowRequest.getMachineID());
+        String machineId = String.valueOf(machineBorrowRequest.getMachineId());
         if (machineId == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeID());
+        String employeeId = String.valueOf(machineBorrowRequest.getEmployeeId());
         if (employeeId == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

@@ -23,11 +23,11 @@ public class MachineBorrowRequest implements Serializable {
     /**
      * 焊机ID
      */
-    private Long machineID;
+    private Long machineId;
 
     /**
      * 员工ID
      */
-    private Long employeeID;
+    private Long employeeId;
 
 }

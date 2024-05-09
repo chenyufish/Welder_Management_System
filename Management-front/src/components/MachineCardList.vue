@@ -6,7 +6,7 @@
       @click-thumb="getMachineDetail(machine.id)"
   >
     <template #title>
-      <div class="team-title" @click="getMachineDetail(machine.id)">{{ machine.machineName }}</div>
+      <div class="machine-name" @click="getMachineDetail(machine.id)">{{ machine.machineName }}</div>
     </template>
     <template #tags>
       <van-tag plain type="danger" style="margin-right: 8px;margin-top: 8px" @click="getMachineDetail(machine.id)">
@@ -18,34 +18,26 @@
         <div class="avatar" v-for="avatar in machine.usageUserAvatars">
           <img :src="avatar" alt="">
         </div>
-        <div v-if="machine.hasUsageNum > 3" class="avatar" style="background-color:#497BC8;">
-          <span>{{ "+" + (machine.hasUsageNum - 3) }}</span>
-        </div>
       </div>
     </template>
     <template #footer>
-      <van-button v-if="!machine.machineStatus" size="small" plain type="primary" @click="doJoinTeam(machine)">
+      <van-button v-if="!machine.machineStatus" size="small" plain type="primary" @click="doBorrowMachine(machine)">
         借用
       </van-button>
       <van-button v-if="machine.machineStatus && machine.userId!==currentUser?.id" size="small" plain
-                  @click="doQuitTeam(machine.id)">
+                  @click="doReturnMachine(machine.id)">
         归还
       </van-button>
       <van-button v-if="machine.userId===currentUser?.id || currentUser?.role===1" size="small" plain
-                  @click="doUpdateTeam(machine.id)">
+                  @click="doUpdateMachine(machine.id)">
         更新
       </van-button>
       <van-button v-if="machine.userId===currentUser?.id || currentUser?.role===1" size="small" plain type="danger"
-                  @click="doDeleteTeam(machine.id)">
+                  @click="doDeleteMachine(machine.id)">
         删除
       </van-button>
     </template>
   </van-card>
-  <van-dialog v-model:show="showPasswordDialog" title="请输入密码" show-cancel-button
-              @confirm="joinTeam(joinTeamId,teamPassword)"
-              @cancel="doClear">
-    <van-field v-model="teamPassword" placeholder="请输入密码" />
-  </van-dialog>
 </template>
 
 <script setup lang="ts">
@@ -57,12 +49,13 @@ import { getCurrentUser } from "../services/user.ts";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import {MachineType} from "../model/machine";
+import {MachineUsageType} from "../model/machineUsage";
 
 
 const showPasswordDialog = ref(false);
 const teamPassword = ref("");
 let currentUser = ref();
-const joinTeamId = ref();
+const borrowMachineId = ref();
 let emits = defineEmits(["refresh"]);
 
 interface MachineCardListProps {
@@ -76,10 +69,10 @@ onMounted(async () => {
 });
 const router = useRouter();
 
-const joinTeam = async (teamId, password = "") => {
+const borrowMachine = async (machineId, employeeId) => {
   const res = await myAxios.post("/usage/borrow", {
-    teamId,
-    password,
+    machineId,
+    employeeId,
   });
   if (res?.data.code === 0) {
     showSuccessToast("借用设备成功");
@@ -89,15 +82,15 @@ const joinTeam = async (teamId, password = "") => {
   }
   doClear();
 };
-const doJoinTeam = async (machine: MachineType) => {
-  joinTeamId.value = machine.id;
+const doBorrowMachine = async (machine: MachineUsageType) => {
+  borrowMachineId.value = machine.id;
   if (machine.machineStatus === 2) {
     showPasswordDialog.value = true;
   } else {
-    await joinTeam(machine.id);
+    await borrowMachine(machine.id,currentUser.value.id);
   }
 };
-const doUpdateTeam = (id: number) => {
+const doUpdateMachine = (id: number) => {
   router.push({
     path: "/machine/update",
     query: {
@@ -106,7 +99,7 @@ const doUpdateTeam = (id: number) => {
   });
 };
 
-const doQuitTeam = async (id: number) => {
+const doReturnMachine = async (id: number) => {
   const res = await myAxios.post("/usage/return", {
     teamId: id,
   });
@@ -118,7 +111,7 @@ const doQuitTeam = async (id: number) => {
   }
 };
 
-const doDeleteTeam = async (id: number) => {
+const doDeleteMachine = async (id: number) => {
   showConfirmDialog({
     title: "确定要删除设备吗",
     message:

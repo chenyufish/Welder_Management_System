@@ -248,7 +248,7 @@ public class WeldingMachinesController {
      * uest 设备更新请求
      * @param request           请求
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation(value = "更新设备")
     @ApiImplicitParams(
             {@ApiImplicitParam(name = "machineUpdateRequest", value = "设备更新请求"),
