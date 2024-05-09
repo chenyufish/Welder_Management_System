@@ -7,13 +7,14 @@
     <resultMap id="BaseResultMap" type="com.fishman.welder_management_backend.model.domain.WeldingUsage">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="machineID" column="machineID" jdbcType="BIGINT"/>
+            <result property="usageNum" column="usageNum" jdbcType="INTEGER"/>
             <result property="employeeID" column="employeeID" jdbcType="BIGINT"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,machineID,employeeID,
+        id,machineID,employeeID,usageNum,
         createTime,updateTime
     </sql>
 </mapper>

@@ -16,7 +16,7 @@
   </div>
   <van-tabbar route v-model="active">
     <van-tabbar-item to="/" icon="home-o" name="index">主页</van-tabbar-item>
-    <van-tabbar-item to="/team" icon="flag-o" name="team">使用记录</van-tabbar-item>
+    <van-tabbar-item to="/machine" icon="flag-o" name="machine">使用记录</van-tabbar-item>
     <van-tabbar-item replace class="van-tabbar-addBlog" @click="checkLogin('/blog/edit',2)">
       <div class="center-wrap">
         <div class="bgc-wrap">

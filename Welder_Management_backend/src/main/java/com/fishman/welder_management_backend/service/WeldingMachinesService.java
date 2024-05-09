@@ -5,9 +5,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.fishman.welder_management_backend.model.domain.User;
 import com.fishman.welder_management_backend.model.domain.WeldingMachine;
 import com.fishman.welder_management_backend.model.request.MachineAddRequest;
+import com.fishman.welder_management_backend.model.request.MachineQueryRequest;
 import com.fishman.welder_management_backend.model.request.MachineUpdateRequest;
+import com.fishman.welder_management_backend.model.request.TeamQueryRequest;
 import com.fishman.welder_management_backend.model.vo.BlogVO;
 import com.fishman.welder_management_backend.model.vo.WeldingMachineVO;
+
+import java.util.List;
 
 
 /**
@@ -25,6 +29,9 @@ public interface WeldingMachinesService extends IService<WeldingMachine> {
      */
     long addMachine(WeldingMachine weldingMachine, User loginUser);
 
+
+    Page<WeldingMachineVO> listMachines(long currentPage, MachineQueryRequest machineQuery, boolean isAdmin);
+
     /**
      * 列出我使用的设备
      *
@@ -33,7 +40,6 @@ public interface WeldingMachinesService extends IService<WeldingMachine> {
      * @return {@link Page}<{@link WeldingMachineVO}>
      */
     Page<WeldingMachineVO> listMyMachines(long currentPage, Long id);
-    Page<WeldingMachineVO> pageWeldingMachine(long currentPage, String machineName, Long id);
 
     /**
      * 收到设备通过id
@@ -59,6 +65,28 @@ public interface WeldingMachinesService extends IService<WeldingMachine> {
      * @param userId            用户id
      * @param isAdmin           是否为管理员
      */
-    void updateMachine(MachineUpdateRequest machineUpdateRequest, Long userId, boolean isAdmin);
+    boolean updateMachine(MachineUpdateRequest machineUpdateRequest, Long userId, boolean isAdmin);
+    /**
+     * 收到用户标签
+     *
+     * @param machineId id
+     */
+    List<String> getMachineTags(Long machineId);
+
+    /**
+     * 更新标记
+     *
+     * @param tags   标签
+     * @param machineId 用户id
+     */
+    void updateMachineTags(List<String> tags, Long machineId);
+
+    /**
+     * 获取我添加到设备
+     * @param currentPage
+     * @param userId
+     * @return
+     */
+    Page<WeldingMachineVO> listMyCreate(long currentPage, Long userId);
 
 }

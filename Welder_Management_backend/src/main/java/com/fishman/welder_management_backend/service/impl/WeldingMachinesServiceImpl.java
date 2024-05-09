@@ -9,6 +9,7 @@ import com.fishman.welder_management_backend.common.ErrorCode;
 import com.fishman.welder_management_backend.exception.BusinessException;
 import com.fishman.welder_management_backend.mapper.WeldingMachinesMapper;
 import com.fishman.welder_management_backend.model.domain.*;
+import com.fishman.welder_management_backend.model.enums.MachineStatusEnum;
 import com.fishman.welder_management_backend.model.request.MachineAddRequest;
 import com.fishman.welder_management_backend.model.request.MachineUpdateRequest;
 import com.fishman.welder_management_backend.model.vo.UserVO;
@@ -17,6 +18,8 @@ import com.fishman.welder_management_backend.properties.FishmanProperties;
 import com.fishman.welder_management_backend.service.UserService;
 import com.fishman.welder_management_backend.service.WeldingMachinesService;
 import com.fishman.welder_management_backend.utils.FileUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,6 +82,35 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         return machineId;
+    }
+    /**
+     * 收到用户标签
+     *
+     * @param machineId id
+     */
+    @Override
+    public List<String> getMachineTags(Long machineId) {
+        WeldingMachine weldingMachine = this.getById(machineId);
+        String machineTags = weldingMachine.getTags();
+        Gson gson = new Gson();
+        return gson.fromJson(machineTags, new TypeToken<List<String>>() {
+        }.getType());
+    }
+
+    /**
+     * 更新标记
+     *
+     * @param tags   标签
+     * @param machineId 用户id
+     */
+    @Override
+    public void updateMachineTags(List<String> tags, Long machineId) {
+        WeldingMachine weldingMachine = new WeldingMachine();
+        Gson gson = new Gson();
+        String tagsJson = gson.toJson(tags);
+        weldingMachine.setId(machineId);
+        weldingMachine.setTags(tagsJson);
+        this.updateById(weldingMachine);
     }
 
     /**
@@ -162,14 +194,14 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
         if (weldingMachine == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "无法找到该设备");
         }
-        WeldingMachineVO wellingMachineVO = new WeldingMachineVO();
-        BeanUtils.copyProperties(weldingMachine, wellingMachineVO);
+        WeldingMachineVO weldingMachineVO = new WeldingMachineVO();
+        BeanUtils.copyProperties(weldingMachine, weldingMachineVO);
         UserVO authorVO = new UserVO();
         User author = userService.getById(weldingMachine.getId());
         BeanUtils.copyProperties(author, authorVO);
-        String images = wellingMachineVO.getImages();
+        String images = weldingMachineVO.getImages();
         if (images == null) {
-            return wellingMachineVO;
+            return weldingMachineVO;
         }
         String[] imgStrs = images.split(",");
         ArrayList<String> imgStrList = new ArrayList<>();
@@ -182,9 +214,9 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
             }
         }
         String imgStr = StringUtils.join(imgStrList, ",");
-        wellingMachineVO.setImages(imgStr);
-        wellingMachineVO.setImagePath(imgStrList.get(0));
-        return wellingMachineVO;
+        weldingMachineVO.setImages(imgStr);
+        weldingMachineVO.setImagePath(imgStrList.get(0));
+        return weldingMachineVO;
     }
 
     @Override
@@ -193,48 +225,48 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
     }
 
     @Override
-    public void updateMachine(MachineUpdateRequest machineUpdateRequest, Long userId, boolean isAdmin) {
-        if (machineUpdateRequest.getId() == null) {
+    public boolean updateMachine(MachineUpdateRequest machineUpdateRequest, Long userId, boolean isAdmin) {
+        if (machineUpdateRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Long machineId = machineUpdateRequest.getId();
+        if (machineId == null|| machineId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        WeldingMachine weldingMachine = this.getById(machineId);
+        if (weldingMachine == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "无法找到该设备");
         }
         String machineName = machineUpdateRequest.getMachineName();
         String tags = machineUpdateRequest.getTags();
         if (StringUtils.isAnyBlank(machineName, tags)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        WeldingMachine wellingMachine = new WeldingMachine();
-        wellingMachine.setId(machineUpdateRequest.getId());
-        ArrayList<String> imageNameList = new ArrayList<>();
-        if (StringUtils.isNotBlank(machineUpdateRequest.getImgStr())) {
-            String imgStr = machineUpdateRequest.getImgStr();
-            String[] imgs = imgStr.split(",");
-            for (String img : imgs) {
-                String fileName = img.substring(img.lastIndexOf("/") + 1);
-                imageNameList.add(fileName);
-            }
-        }
-        if (machineUpdateRequest.getImagePath() != null) {
-            MultipartFile[] images = machineUpdateRequest.getImagePath();
-            if (fishmanProperties.isUseLocalStorage()) {
-                for (MultipartFile image : images) {
-                    String filename = FileUtils.uploadFile2Local(image);
-                    imageNameList.add(filename);
-                }
-            } else {
-                for (MultipartFile image : images) {
-                    String filename = FileUtils.uploadFile2Cloud(image);
-                    imageNameList.add(filename);
-                }
-            }
-        }
-        if (!imageNameList.isEmpty()) {
-            String imageStr = StringUtils.join(imageNameList, ",");
-            wellingMachine.setImagePath(imageStr);
-        }
-        wellingMachine.setMachineName(machineUpdateRequest.getMachineName());
-        wellingMachine.setTags(machineUpdateRequest.getTags());
-        this.updateById(wellingMachine);
+        WeldingMachine updateMachine = new WeldingMachine();
+        BeanUtils.copyProperties(machineUpdateRequest, updateMachine);
+       return this.updateById(updateMachine);
     }
+
+    /**
+     * 获取我创建的设备
+     * @param currentPage
+     * @param userId
+     * @return
+     */
+    @Override
+    public Page<WeldingMachineVO> listMyCreate(long currentPage, Long userId) {
+        LambdaQueryWrapper<WeldingMachine> machineLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        machineLambdaQueryWrapper.eq(WeldingMachine::getId, userId);
+        Page<WeldingMachine> machienPage = this.page(new Page<>(currentPage, PAGE_SIZE), machineLambdaQueryWrapper);
+        List<WeldingMachineVO> machienVOList = machienPage.getRecords()
+                .stream().map((weldingMachine) -> this.getMachineById(weldingMachine.getId(), userId))
+                .collect(Collectors.toList());
+        Page<WeldingMachineVO> machineVOPage = new Page<>();
+        BeanUtils.copyProperties(machienPage, machineVOPage);
+        machineVOPage.setRecords(machienVOList);
+        return machineVOPage;
+    }
+
 
 }
 

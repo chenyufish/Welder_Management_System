@@ -52,6 +52,7 @@ import {useRouter} from "vue-router";
 import {showFailToast} from "vant";
 import myAxios from "../plugins/myAxios.js";
 
+
 let router = useRouter();
 const onClickRight = () => {
   router.replace("/")
@@ -139,8 +140,10 @@ const originTagList = [
 ];
 let tagList = ref(originTagList);
 const searchText = ref('');
+const params = new URLSearchParams(window.location.search);
+const machineId = params.get('id');
 onMounted(async () => {
-  let res = await myAxios.get("/user/tags");
+  let res = await myAxios.get(`/machine/tags?machineId=${machineId}`);
   if (res?.data.code === 0) {
     activeIds.value = res.data.data
   }
@@ -162,9 +165,9 @@ const close = (tag) => {
   })
 };
 const updateTag = async () => {
-  let res = await myAxios.put("/user/update/tags", activeIds.value);
+  let res = await myAxios.put(`/machine/update/tags?machineId=${machineId}`, activeIds.value);
   if (res?.data.code === 0) {
-    await router.replace("/user")
+    await router.replace("/machine")
   }
 }
 </script>

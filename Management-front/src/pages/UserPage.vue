@@ -25,7 +25,7 @@
       </template>
     </van-cell>
     <van-grid :border="false">
-      <van-grid-item text="创建的队伍" to="/user/team/create">
+      <van-grid-item text="我添加的设备" to="/user/machine/create">
         <template #icon>
           <van-icon class-prefix="my-icon" name="wochuangjiande" size="23" style="margin-bottom: 8px"/>
         </template>

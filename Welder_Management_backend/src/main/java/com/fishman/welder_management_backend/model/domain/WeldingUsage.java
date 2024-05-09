@@ -31,6 +31,10 @@ public class WeldingUsage implements Serializable {
      * 员工ID
      */
     private Long employeeID;
+    /**
+     * 使用人数（小时）
+     */
+    private Integer usageNum;
 
     /**
      * 借用时间
