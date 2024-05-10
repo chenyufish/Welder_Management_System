@@ -56,6 +56,6 @@ public class MachineQueryRequest implements Serializable {
      * 0 - 公开，1 - 私有，2 - 加密
      */
     @ApiModelProperty(value = "状态0 - 空闲，1 - 使用中，2 - 故障")
-    private Integer status;
+    private Integer machineStatus;
 
 }

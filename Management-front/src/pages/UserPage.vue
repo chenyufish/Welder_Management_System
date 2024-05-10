@@ -35,7 +35,7 @@
           <van-icon class-prefix="my-icon" name="jiarubanji" size="23" style="margin-bottom: 8px"/>
         </template>
       </van-grid-item>
-      <van-grid-item text="我写的帖文" to="/user/blog">
+      <van-grid-item text="我写的报告" to="/user/blog">
         <template #icon>
           <van-icon class-prefix="my-icon" name="wofadetiezi" size="23" style="margin-bottom: 8px"/>
         </template>

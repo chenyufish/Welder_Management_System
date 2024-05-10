@@ -10,6 +10,7 @@ declare module 'vue' {
     BlogCardList: typeof import('./src/components/BlogCardList.vue')['default']
     CommentList: typeof import('./src/components/CommentList.vue')['default']
     MachineCardList: typeof import('./src/components/MachineCardList.vue')['default']
+    MachineUsageCardList: typeof import('./src/components/MachineUsageCardList.vue')['default']
     MessageDefaultGrid: typeof import('./src/components/MessageDefaultGrid.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -102,7 +102,7 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
             // 根据队长Id查询
             Long userId = machineQuery.getUserId();
             // 根据状态来查询
-            Integer status = machineQuery.getStatus();
+            Integer status = machineQuery.getMachineStatus();
             TeamStatusEnum statusEnum = TeamStatusEnum.getEnumByValue(status);
             if (statusEnum == null) {
                 statusEnum = TeamStatusEnum.PUBLIC;
@@ -134,16 +134,16 @@ public class WeldingMachinesServiceImpl extends ServiceImpl<WeldingMachinesMappe
      * @return {@link Page}<{@link WeldingMachineVO}>
      */
     public Page<WeldingMachineVO> listTeamByCondition(long currentPage, LambdaQueryWrapper<WeldingMachine> machineLambdaQueryWrapper) {
-        Page<WeldingMachine> teamPage = this.page(new Page<>(currentPage, PAGE_SIZE), machineLambdaQueryWrapper);
-        if (CollectionUtils.isEmpty(teamPage.getRecords())) {
+        Page<WeldingMachine> machinePage = this.page(new Page<>(currentPage, PAGE_SIZE), machineLambdaQueryWrapper);
+        if (CollectionUtils.isEmpty(machinePage.getRecords())) {
             return new Page<>();
         }
         Page<WeldingMachineVO> machineVoPage = new Page<>();
         // 关联查询创建人的用户信息
-        BeanUtils.copyProperties(teamPage, machineVoPage, "records");
-        List<WeldingMachine> teamPageRecords = teamPage.getRecords();
+        BeanUtils.copyProperties(machinePage, machineVoPage, "records");
+        List<WeldingMachine> machinePageRecords = machinePage.getRecords();
         ArrayList<WeldingMachineVO> teamUserVOList = new ArrayList<>();
-        for (WeldingMachine weldingMachine : teamPageRecords) {
+        for (WeldingMachine weldingMachine : machinePageRecords) {
             Long userId = weldingMachine.getUserId();
             if (userId == null) {
                 continue;

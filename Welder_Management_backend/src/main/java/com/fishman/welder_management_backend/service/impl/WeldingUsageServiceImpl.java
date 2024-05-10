@@ -33,8 +33,7 @@ public class WeldingUsageServiceImpl extends ServiceImpl<WeldingUsageMapper, Wel
     public Long borrowMachine(MachineBorrowRequest machineBorrowRequest, User loginUser) {
         String machineId = String.valueOf(machineBorrowRequest.getMachineId());
         String employeeId = String.valueOf(machineBorrowRequest.getEmployeeId());
-        WeldingUsageVO weldingUsageVO = new WeldingUsageVO();
-        Integer status =weldingUsageVO.getMachineStatus();
+        Integer status =machineBorrowRequest.getMachineStatus();
         if (status == null)
             throw new BusinessException(ErrorCode.SYSTEM_ERROR);
         if (machineId == null) {
@@ -46,7 +45,9 @@ public class WeldingUsageServiceImpl extends ServiceImpl<WeldingUsageMapper, Wel
         WeldingUsage weldingUsage = new WeldingUsage();
         weldingUsage.setMachineID(Long.valueOf(machineId));
         weldingUsage.setEmployeeID(Long.valueOf(employeeId));
+
         WeldingMachine weldingMachine=new WeldingMachine();
+
         weldingMachine.setMachineStatus(1);
         boolean result = this.save(weldingUsage);
         if (result) {

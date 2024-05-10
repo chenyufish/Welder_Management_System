@@ -44,7 +44,7 @@ import {ref} from "vue";
 import myAxios from "../plugins/myAxios.js";
 import {showConfirmDialog, showFailToast} from "vant";
 import {getCurrentUser} from "../services/user.ts";
-import MachineCardList from "../components/MachineCardList.vue";
+import MachineCardList from "../components/MachineUsageCardList.vue";
 
 const active = ref('public')
 let router = useRouter();
@@ -59,9 +59,9 @@ const tabChange = (name) => {
   listFinished.value = false
   currentPage.value = 1
   if (name === 'public') {
-    listTeams(currentPage.value, searchText.value, 0)
+    listMachines(currentPage.value, searchText.value, 0)
   } else {
-    listTeams(currentPage.value, searchText.value, 2)
+    listMachines(currentPage.value, searchText.value, 2)
   }
 }
 const toCreateTeam = async () => {
@@ -81,12 +81,12 @@ const toCreateTeam = async () => {
     await router.push("/machine/add")
   }
 }
-const listTeams = async (currentPage, val = '', status = 0) => {
+const listMachines = async (currentPage, val = '', machineStatus = 0) => {
   listLoading.value = true
   const res = await myAxios.get("/machine/list", {
     params: {
       searchText: val,
-      status,
+      machineStatus,
       currentPage
     }
   })
@@ -95,7 +95,7 @@ const listTeams = async (currentPage, val = '', status = 0) => {
       listFinished.value = true
       return
     }
-    res.data.data.records.forEach(team => machineList.value.push(team))
+    res.data.data.records.forEach(machine => machineList.value.push(machine))
   } else {
     showFailToast("设备加载失败" + (res.data.description ? `,${res.data.description}` : ''))
   }
@@ -106,14 +106,14 @@ const onSearch = async (val) => {
   listFinished.value = false
   currentPage.value = 1
   if (active.value === 'public') {
-    await listTeams(currentPage.value, searchText.value, 0)
+    await listMachines(currentPage.value, searchText.value, 0)
   } else {
-    await listTeams(currentPage.value, searchText.value, 2)
+    await listMachines(currentPage.value, searchText.value, 2)
   }
 }
 const onLoad = async () => {
   currentPage.value++
-  await listTeams(currentPage.value)
+  await listMachines(currentPage.value)
   // onLoading.value=false
 }
 
@@ -122,9 +122,9 @@ const onRefresh = async () => {
   listFinished.value = false
   currentPage.value = 1
   if (active.value === 'public') {
-    await listTeams(currentPage.value, searchText.value)
+    await listMachines(currentPage.value, searchText.value)
   } else {
-    await listTeams(currentPage.value, searchText.value, 2)
+    await listMachines(currentPage.value, searchText.value, 2)
   }
   refreshLoading.value = false
 }

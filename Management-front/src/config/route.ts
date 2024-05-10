@@ -49,8 +49,8 @@ const routes = [
     {path: '/user/detail', title: '用户详情', component: UserDetailPage},
     {path: '/user/signup', component: SignUpPage},
 
-    {path: '/after/machine', title: '标签', component: AfterMachineAdd, meta: {layout: 'after'}},
-    {path: '/after/user', title: '标签', component: AfterSignUp, meta: {layout: 'after'}},
+    {path: '/after/machine', title: '标签', component: AfterMachineAdd, meta: {layout: 'after-machine'}},
+    {path: '/after/user', title: '标签', component: AfterSignUp, meta: {layout: 'after-user'}},
 
     {path: '/user/login', title: "用户登录", component: UserLogin},
     {path: '/user/edit', title: "修改用户", component: EditUser},

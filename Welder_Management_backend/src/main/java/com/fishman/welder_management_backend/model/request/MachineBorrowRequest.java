@@ -30,4 +30,6 @@ public class MachineBorrowRequest implements Serializable {
      */
     private Long employeeId;
 
+    private Integer machineStatus;
+
 }

@@ -73,7 +73,6 @@
 import {ref} from "vue";
 import myAxios from "../plugins/myAxios.js";
 import {showFailToast} from "vant";
-import UserCardList from "../components/UserCardList.vue";
 import BlogCardList from "../components/BlogCardList.vue";
 
 const searching = ref(false)
@@ -116,7 +115,8 @@ const getBlogList = async (currentPage) => {
 }
 
 async function getUserList(currentPage) {
-  const userListData = await myAxios.get("/user/match", {
+  //TODO 其实这里是match设备匹配
+  const userListData = await myAxios.get("/machine/list", {
     params: {
       currentPage: currentPage,
       username: userSearch.value
